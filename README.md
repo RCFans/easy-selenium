@@ -24,7 +24,7 @@ import easy-selenium module and use it!
 ``` python
 from easyselenium import *
 
-open('http://www.bing.com')
+goto('http://www.bing.com')
 inputText('//*[@id=\"sb_form_q\"]', 'easyselenium')
 click('//*[@id="sb_form_go"]')
 
