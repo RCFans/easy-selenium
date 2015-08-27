@@ -29,7 +29,7 @@ def ChromeDriver():
     driver = webdriver.Chrome();
     wait = WebDriverWait(driver, wait_seconds)
 
-def open(url):
+def goto(url):
     driver.get(url)
 
 def waitPage(title):
