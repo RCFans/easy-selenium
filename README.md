@@ -9,17 +9,17 @@ To fix these, I created this module. It's a pretty small file but includes many 
 * Safely control page and elements
 * Safely switch to Window, Frame and Lightbox
 
-## Setup environment
+### Quick start In 5 Minutes
 
-First, you need to install selenium for python.
+Install selenium for python.
 
 ```
 pip install selenium
 ```
 
-Then put webdriver to your system environment path. I provided Chrome Driver for Mac OS X in drivers folder.
+Then download and put webdriver to your system environment path. I provided Chrome Driver for Mac OS X in drivers folder.
 
-import easy-selenium module and use it!
+Import easyselenium module and use it!
 
 ``` python
 from easyselenium import *
