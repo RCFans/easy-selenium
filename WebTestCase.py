@@ -4,7 +4,8 @@
 # <codecell>
 
 import unittest
-from easyselenium import EasySelenium
+from urllib2 import HTTPError
+from easyselenium import *
 
 class WebTestCase(unittest.TestCase):
     build = "XXX项目 xxx 版本"
@@ -14,11 +15,15 @@ class WebTestCase(unittest.TestCase):
 
     def setUp(self):
         self.result = ""
-        self.driver = EasySelenium.ChromeDriver()
+        self.driver = ChromeDriver()
 
     def tearDown(self):
         self.driver.save_screenshot('screenshot.png')
-        self.driver.quit()
+        self.driver.close()
+        try:
+            self.driver.quit()
+        except HTTPError:
+            pass
 
     def testChrome(self):
         WebTestCase.wait_seconds = 30

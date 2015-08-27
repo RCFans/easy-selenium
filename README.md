@@ -5,6 +5,7 @@ Selenium is a powerful tool for web automation. But its APIs is a little bit com
 To fix these, I created this module. It's a pretty small file but includes many features below:
 
 * Use XPath to locate element
+* Suport dynamic id
 * Safely control page and elements
 * Safely switch to Window, Frame and Lightbox
 
@@ -21,7 +22,7 @@ Then put webdriver to your system environment path. I provided Chrome Driver for
 import easy-selenium module and use it!
 
 ``` python
-from easyselenium import EasySelenium
+from easyselenium import *
 
 open('http://www.bing.com')
 input('//*[@id=\"sb_form_q\"]', 'easyselenium')

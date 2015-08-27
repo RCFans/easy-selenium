@@ -19,90 +19,91 @@ url = ""
 desired_cap = {}
 wait_seconds = 0
 
-class EasySelenium():
+def remoteDriver(url):
+    desired_cap["project"] = project
+    desired_cap["build"] = build
+    driver = webdriver.Remote(url, desired_capabilities = desired_cap)
+    wait = WebDriverWait(driver, wait_seconds)
 
-    def remoteDriver(self, url):
-        desired_cap["project"] = project
-        desired_cap["build"] = build
-        self.driver = webdriver.Remote(url, desired_capabilities = desired_cap)
-        self.wait = WebDriverWait(self.driver, wait_seconds)
+def ChromeDriver():
+    driver = webdriver.Chrome();
+    wait = WebDriverWait(driver, wait_seconds)
 
-    def ChromeDriver(self):
-        self.driver = webdriver.Chrome();
-        self.wait = WebDriverWait(self.driver, wait_seconds)
+def open(url):
+    driver.get(url)
 
-    def waitPage(self, title):
-        self.wait.until(EC.title_is(title))
+def waitPage(title):
+    wait.until(EC.title_is(title))
 
-    def switchToWindow(self, title):
-        handles = self.driver.window_handles
-        while len(handles) == 1:
-            handles = self.driver.window_handles
-        self.driver.switch_to_window(handles[len(handles) - 1])
-        try:
-            self.waitPage(title)
-        except TimeoutException:
-            self.driver.switch_to_window(handles[len(handles) - 2])
+def switchToWindow(title):
+    handles = driver.window_handles
+    while len(handles) == 1:
+        handles = driver.window_handles
+    driver.switch_to_window(handles[len(handles) - 1])
+    try:
+        waitPage(title)
+    except TimeoutException:
+        driver.switch_to_window(handles[len(handles) - 2])
 
-    def switchToLightbox(self, path):
-        self.wait.until(EC.visibility_of_element_located((By.XPATH, path)))
+def switchToLightbox(path):
+    wait.until(EC.visibility_of_element_located((By.XPATH, path)))
 
-    def switchToFrame(self, name):
-        self.wait.until(EC.visibility_of_element_located((By.ID, name)))
-        self.driver.switch_to_frame(name)
+def switchToFrame(name):
+    wait.until(EC.visibility_of_element_located((By.ID, name)))
+    driver.switch_to_frame(name)
 
-    def getXPathByDynamicId(self, tag, value):
-        return '//' + tag + '[contains(@id, ' + value +')]'
+def getXPathByDynamicId(tag, value):
+    return '//' + tag + '[contains(@id, ' + value +')]'
 
-    def getXPathByText(self, tag, value):
-        return '//' + tag + '[contains(., ' + value +')]'
+def getXPathByText(tag, value):
+    return '//' + tag + '[contains(., ' + value +')]'
 
-    def click(self, path):
-        if wait_seconds > 0:
-            self.wait.until(EC.element_to_be_clickable((By.XPATH, path))).click()
-        else:
-            self.driver.find_element_by_xpath(path).click()
+def click(path):
+    if wait_seconds > 0:
+        wait.until(EC.element_to_be_clickable((By.XPATH, path))).click()
+    else:
+        driver.find_element_by_xpath(path).click()
 
-    def rightClick(self, path):
-        ActionChains(driver).context_click(self.driver.find_element_by_xpath(path)).perform()
+def rightClick(path):
+    ActionChains(driver).context_click(driver.find_element_by_xpath(path)).perform()
 
-    def doubleClick(self, path):
-        ActionChains(driver).double_click(self.driver.find_element_by_xpath(path)).perform()
+def doubleClick(path):
+    ActionChains(driver).double_click(driver.find_element_by_xpath(path)).perform()
 
-    def drag(self, sourcePath, targetPath):
-        source = self.driver.find_element_by_xpath(sourcePath)
-        target = self.driver.find_element_by_xpath(targetPath)
-        ActionChains(driver).drag_and_drop(source, target).perform()
+def drag(sourcePath, targetPath):
+    source = driver.find_element_by_xpath(sourcePath)
+    target = driver.find_element_by_xpath(targetPath)
+    ActionChains(driver).drag_and_drop(source, target).perform()
 
-    def select(self, path, index):
-        if wait_seconds > 30:
-            self.clickElement(path)
-            Select(self.driver.find_element_by_xpath(path)).select_by_index(index)
-        elif wait_seconds > 20:
-            Select(self.wait.until(EC.visibility_of_element_located((By.XPATH, path)))).select_by_index(index)
-        else:
-            Select(self.driver.find_element_by_xpath(path)).select_by_index(index)
+def select(path, index):
+    if wait_seconds > 30:
+        clickElement(path)
+        Select(driver.find_element_by_xpath(path)).select_by_index(index)
+    elif wait_seconds > 20:
+        Select(wait.until(EC.visibility_of_element_located((By.XPATH, path)))).select_by_index(index)
+    else:
+        Select(driver.find_element_by_xpath(path)).select_by_index(index)
 
-    def inputText(self, path, text):
-        if wait_seconds > 0:
-            self.wait.until(EC.visibility_of_element_located((By.XPATH, path))).send_keys(text)
-        else:
-            self.driver.find_element_by_xpath(path).send_keys(text)
+def inputText(path, text):
+    if wait_seconds > 0:
+        wait.until(EC.visibility_of_element_located((By.XPATH, path))).send_keys(text)
+    else:
+        driver.find_element_by_xpath(path).send_keys(text)
 
-    def getText(self, path):
-        if wait_seconds > 0:
-            return self.wait.until(EC.presence_of_element_located((By.XPATH, path))).text
-        else:
-            return self.driver.find_element_by_xpath(path).text
+def getText(path):
+    if wait_seconds > 0:
+        return wait.until(EC.presence_of_element_located((By.XPATH, path))).text
+    else:
+        return driver.find_element_by_xpath(path).text
 
-    def pressCtrlX(self, key):
-        ActionChains(driver).key_down(Keys.CONTROL).send_keys(key).key_up(Keys.CONTROL).perform()
+def pressCtrlX(key):
+    ActionChains(driver).key_down(Keys.CONTROL).send_keys(key).key_up(Keys.CONTROL).perform()
 
-    def selectAll(self):
-        pressCtrlX('a')
+def selectAll():
+    pressCtrlX('a')
 
-    def copy(self):
-        pressCtrlX('c')
+def copy():
+    pressCtrlX('c')
 
-    def paste(self):
-        pressCtrlX('v')
+def paste():
+    pressCtrlX('v')
