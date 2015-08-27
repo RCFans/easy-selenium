@@ -14,28 +14,22 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.common.exceptions import TimeoutException
 
+build = "XXX项目 xxx 版本"
+url = ""
+desired_cap = {}
+wait_seconds = 0
+
 class EasySelenium():
-    build = "XXX项目 xxx 版本"
-    url = ""
-    desired_cap = {}
-    wait_seconds = 0
-
-    def setUp(self):
-        self.result = ""
-
-    def tearDown(self):
-        self.driver.save_screenshot('screenshot.png')
-        self.driver.close()
 
     def remoteDriver(self, url):
-        EasySelenium.desired_cap["project"] = project
-        EasySelenium.desired_cap["build"] = EasySelenium.build
-        self.driver = webdriver.Remote(url, desired_capabilities = EasySelenium.desired_cap)
-        self.wait = WebDriverWait(self.driver, EasySelenium.wait_seconds)
+        desired_cap["project"] = project
+        desired_cap["build"] = build
+        self.driver = webdriver.Remote(url, desired_capabilities = desired_cap)
+        self.wait = WebDriverWait(self.driver, wait_seconds)
 
     def ChromeDriver(self):
         self.driver = webdriver.Chrome();
-        self.wait = WebDriverWait(self.driver, EasySelenium.wait_seconds)
+        self.wait = WebDriverWait(self.driver, wait_seconds)
 
     def waitPage(self, title):
         self.wait.until(EC.title_is(title))
@@ -57,8 +51,14 @@ class EasySelenium():
         self.wait.until(EC.visibility_of_element_located((By.ID, name)))
         self.driver.switch_to_frame(name)
 
+    def getXPathByDynamicId(self, tag, value):
+        return '//' + tag + '[contains(@id, ' + value +')]'
+
+    def getXPathByText(self, tag, value):
+        return '//' + tag + '[contains(., ' + value +')]'
+
     def click(self, path):
-        if EasySelenium.wait_seconds > 0:
+        if wait_seconds > 0:
             self.wait.until(EC.element_to_be_clickable((By.XPATH, path))).click()
         else:
             self.driver.find_element_by_xpath(path).click()
@@ -75,22 +75,22 @@ class EasySelenium():
         ActionChains(driver).drag_and_drop(source, target).perform()
 
     def select(self, path, index):
-        if EasySelenium.wait_seconds > 30:
+        if wait_seconds > 30:
             self.clickElement(path)
             Select(self.driver.find_element_by_xpath(path)).select_by_index(index)
-        elif EasySelenium.wait_seconds > 20:
+        elif wait_seconds > 20:
             Select(self.wait.until(EC.visibility_of_element_located((By.XPATH, path)))).select_by_index(index)
         else:
             Select(self.driver.find_element_by_xpath(path)).select_by_index(index)
 
-    def input(self, path, text):
-        if EasySelenium.wait_seconds > 0:
+    def inputText(self, path, text):
+        if wait_seconds > 0:
             self.wait.until(EC.visibility_of_element_located((By.XPATH, path))).send_keys(text)
         else:
             self.driver.find_element_by_xpath(path).send_keys(text)
 
     def getText(self, path):
-        if EasySelenium.wait_seconds > 0:
+        if wait_seconds > 0:
             return self.wait.until(EC.presence_of_element_located((By.XPATH, path))).text
         else:
             return self.driver.find_element_by_xpath(path).text
