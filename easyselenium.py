@@ -17,15 +17,13 @@ build = "XXX项目 xxx 版本"
 url = ""
 desired_cap = {}
 wait_seconds = 0
+driver = webdriver.Chrome();
+wait = WebDriverWait(driver, wait_seconds)
 
 def remoteDriver(url):
     desired_cap["project"] = project
     desired_cap["build"] = build
     driver = webdriver.Remote(url, desired_capabilities = desired_cap)
-    wait = WebDriverWait(driver, wait_seconds)
-
-def ChromeDriver():
-    driver = webdriver.Chrome();
     wait = WebDriverWait(driver, wait_seconds)
 
 def goto(url):
@@ -52,10 +50,10 @@ def switchToFrame(name):
     driver.switch_to_frame(name)
 
 def getXPathByDynamicId(tag, value):
-    return '//' + tag + '[contains(@id, ' + value +')]'
+    return '//' + tag + '[contains(@id, "' + value +'")]'
 
 def getXPathByText(tag, value):
-    return '//' + tag + '[contains(., ' + value +')]'
+    return '//' + tag + '[contains(., "' + value +'")]'
 
 def click(path):
     if wait_seconds > 0:
